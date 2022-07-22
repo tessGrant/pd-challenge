@@ -5,9 +5,13 @@ import { Grid } from '../components/pdGrid';
 import { getCards } from '../utils/api/fetchServices';
 import { Card } from './CardComponent';
 import { Header } from './Header';
+import { PdPagination } from './Pagination';
+
+const maxCardsPages = 3;
 
 export const PdContainer = () => {
-    const  {data, isLoading, isError} = useQuery(["cards"], getCards)
+    const [currentPage, setCurrentPage] = useState(1);
+    const  {data, isLoading, isError} = useQuery(["cards", currentPage], () => getCards(currentPage ))
     const [filtered, setFiltered] = useState([]);
 
     useEffect(() => {
@@ -25,6 +29,22 @@ export const PdContainer = () => {
             <Grid>
                 {filtered?.map((card: any, i: number )=> <Card key={i} item={card} />)}
             </Grid>
+            <div>
+                <button
+                    disabled={currentPage <= 1}
+                    onClick={()=>{
+                        setCurrentPage(previousValue => previousValue - 1)
+                    }}
+                >Prev. page</button>
+                <span>Page {currentPage} from {maxCardsPages}</span>
+                <button
+                    disabled={currentPage >= maxCardsPages}
+                    onClick={()=>{
+                        setCurrentPage(previousValue => previousValue + 1)
+                    }}
+                >Next page</button>
+            </div>
+            <PdPagination pages={maxCardsPages} />
         </StyledContainer>
     );
 }
