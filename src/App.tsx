@@ -1,17 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {QueryClient, QueryClientProvider} from 'react-query'
+import { ThemeProvider } from 'styled-components';
+import { ReactQueryDevtools } from "react-query/devtools";
+import { PdContainer } from './sections/Container';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-         This is a Planday Challenge
-        </p>
-      </header>
-    </div>
+    <ThemeProvider theme={{ mode: 'light' }}>
+      <QueryClientProvider client={queryClient} contextSharing={true}>
+        <PdContainer />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
