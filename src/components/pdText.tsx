@@ -13,7 +13,7 @@ interface IProps {
     children: string;
 }
 
-export const PdText = (props: IProps) => <StyledText {...props}>{props.children}</StyledText>
+export const Text = (props: IProps) => <StyledText {...props}>{props.children}</StyledText>
 
 const StyledText = styled.div<IProps>`
     display: flex;
@@ -23,7 +23,7 @@ const StyledText = styled.div<IProps>`
     ${props => props.logoText && `
         margin: 0;
         line-height: 1.15;
-        font-size: 5rem;
+        font-size: 2.5rem;
         font-family: 'The Nautigal', cursive;
     `};
     ${props => props.centered && `
@@ -34,5 +34,15 @@ const StyledText = styled.div<IProps>`
     `};
     ${props => props.alignRight && `
         justify-content: flex-end;
+    `};
+    ${props => props.strong && `
+        font-weight: 600;
+    `};
+    ${props => props.titleText && `
+        font-weight: 600;
+        font-size: 16px;
+    `};
+    ${props => props.bodyText && `
+        font-size: 14px;
     `};
 `;
