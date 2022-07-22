@@ -5,46 +5,36 @@ import { Grid } from '../components/pdGrid';
 import { getCards } from '../utils/api/fetchServices';
 import { Card } from './CardComponent';
 import { Header } from './Header';
-import { PdPagination } from './Pagination';
+import Pagination from '@material-ui/lab/Pagination';
 
-const maxCardsPages = 3;
-
-export const PdContainer = () => {
+export const MainContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const  {data, isLoading, isError} = useQuery(["cards", currentPage], () => getCards(currentPage ))
-    const [filtered, setFiltered] = useState([]);
 
+    const [filtered, setFiltered] = useState([]);
+    const  {data, isLoading, isError} = useQuery(["cards", currentPage], () => getCards(currentPage ))
+
+    const handleChange = (e:React.ChangeEvent<unknown>, p:number) => {
+        setCurrentPage(p);
+    };
+
+    
     useEffect(() => {
-        setFiltered(data)
+        setFiltered(data);
     }, [data])
 
     if (isLoading) return <div>Loading...</div>;
     if (isError) {
         return <div>An error occured 😭</div>;
     }
-
     return (
         <StyledContainer>
             <Header></Header>
             <Grid>
-                {filtered?.map((card: any, i: number )=> <Card key={i} item={card} />)}
+                {filtered?.map((card: any, i: number )=> <Card key={card.id} item={card} />)}
             </Grid>
-            <div>
-                <button
-                    disabled={currentPage <= 1}
-                    onClick={()=>{
-                        setCurrentPage(previousValue => previousValue - 1)
-                    }}
-                >Prev. page</button>
-                <span>Page {currentPage} from {maxCardsPages}</span>
-                <button
-                    disabled={currentPage >= maxCardsPages}
-                    onClick={()=>{
-                        setCurrentPage(previousValue => previousValue + 1)
-                    }}
-                >Next page</button>
-            </div>
-            <PdPagination pages={maxCardsPages} />
+            <StyledPagination>
+                <Pagination page={currentPage} count={3} onChange={handleChange} size="large"/>
+            </StyledPagination>
         </StyledContainer>
     );
 }
@@ -54,4 +44,12 @@ const StyledContainer = styled.div`
     height: auto;
     width: 900px;
     padding-bottom: 30px;
-`
+`;
+
+const StyledPagination = styled.div`
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+`;

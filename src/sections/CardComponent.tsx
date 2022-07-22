@@ -1,9 +1,15 @@
-import React from 'react';
+import Button from '@material-ui/core/Button';
+import { useMutation } from 'react-query';
+import { deleteCardMutation } from 'src/utils/api/fetchServices';
 import styled from 'styled-components';
 import {Text} from '../components/pdText';
 import { PDCard } from '../utils/types';
 
 export const Card = (props: PDCard | any ) => {
+    const deleteHandler = useMutation((id: any) => deleteCardMutation(id));
+    const deleteCardFunc = (id: any) => {
+        deleteHandler.mutate(id);
+    }
    return  (
         <StyledCard>
             <StyledImgWrraper>
@@ -12,6 +18,7 @@ export const Card = (props: PDCard | any ) => {
             <StyledTextBox>
                 <Text titleText strong alignLeft>{props.item.title}</Text>
                 <Text bodyText alignLeft>{props.item.description}</Text>
+                <Button onClick={() => deleteCardFunc(props.item.id)}>Delete</Button>
             </StyledTextBox>
          </StyledCard>)
 }
@@ -24,7 +31,7 @@ const StyledCard = styled.div`
     height: 200px;
     border: 1px solid red;
     border-radius: 15px;
-    margin-top: 40px;
+    margin-bottom: 40px;
     overflow: hidden;
 `;
 

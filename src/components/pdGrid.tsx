@@ -15,12 +15,10 @@ export const Grid = (props: IProps) => {
 const StyledGrid = styled.div<IProps>`
     flex-grow: 1;
     display: flex;
-    flex: 1;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    align-content: center;
-    padding-bottom: 40px;
-    border-bottom: 1px solid #000;
+    align-content: flex-start;
+    height: 480px;
 `;

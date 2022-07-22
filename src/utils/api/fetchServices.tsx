@@ -16,3 +16,9 @@ export const addNewCardMutation = async (card: PDCard) => await fetch(`http://lo
     if(!res.ok){throw new Error(res.statusText)};
     return res.json();
 });
+
+export const deleteCardMutation = async (id: any) => await fetch(`http://localhost:3001/cards/${id}`, {method: 'DELETE'}).then(res => {
+    if(!res.ok){throw new Error(res.statusText)};
+    return res.json();
+});
+
