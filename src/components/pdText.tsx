@@ -23,7 +23,7 @@ const StyledText = styled.div<IProps>`
     ${props => props.logoText && `
         margin: 0;
         line-height: 1.15;
-        font-size: 7rem;
+        font-size: 5rem;
         font-family: 'The Nautigal', cursive;
     `};
     ${props => props.centered && `
