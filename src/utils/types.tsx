@@ -8,3 +8,8 @@ export interface PDCard {
 export interface PDCards {
     cards: PDCard[];
 }
+
+export interface FilteredObj {
+    filterKey: any;
+    filterValue: any;
+}

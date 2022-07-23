@@ -1,6 +1,13 @@
-import { PDCard } from "../types";
+import { FilteredObj, PDCard } from "../types";
 
-export const getCards = async (pageNum: number) => await fetch(`http://localhost:3001/cards?_limit=8&_page=${pageNum}`).then(res => {
+export const getCards = async (pageNum?: number) => 
+    await fetch(`http://localhost:3001/cards?_limit=8&_page=${pageNum}`).then(res => {
+        if(!res.ok){throw new Error(res.statusText)}
+        return res.json();
+    });
+
+
+export const filterByKey = async (filterBy: FilteredObj) => await fetch(`http://localhost:3001/cards?${filterBy.filterKey}_like=${filterBy.filterValue}`).then(res => {
     if(!res.ok){throw new Error(res.statusText)}
     return res.json();
 });
