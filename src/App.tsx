@@ -4,7 +4,15 @@ import { ThemeProvider } from 'styled-components';
 import { ReactQueryDevtools } from "react-query/devtools";
 import { MainContainer } from './sections/MainContainer';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      staleTime: 30000,
+    },
+  },
+});
 
 function App() {
   return (

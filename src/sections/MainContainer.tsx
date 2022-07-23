@@ -5,26 +5,17 @@ import { Card } from './CardComponent';
 import { Header } from './Header';
 import Pagination from '@material-ui/lab/Pagination';
 import FormControl from '@material-ui/core/FormControl';
-import { FilterCards } from './filter';
 import { useGetCards } from 'src/utils/hooks/useQueryHook';
+import TextField from '@material-ui/core/TextField';
 
 export const MainContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [filterKey, setFilterKey] = useState("");
-    const [filters, setFilters] = useState({ filterKey: "", filterValue: ""});
+    const [filters, setFilters] = useState({ filterValue: ""});
     const [isFiltering, setIsFiltering] = useState(false);
-    const [cleanFilter, setCleanFilter] = useState(false);
     const [filterValue, setFilterValue] = useState("");
     const [filtered, setFiltered] = useState([]);
 
     const  {data, isLoading, isError} = useGetCards(isFiltering, filters, currentPage);
-
-    const dataKeys = [
-        {
-          keyName: "title",
-          label: "Card title"
-        }
-      ]
 
     const handlePageChange = (e:React.ChangeEvent<unknown>, p:number) => {
         setCurrentPage(p);
@@ -34,23 +25,12 @@ export const MainContainer = () => {
         setFilterValue(event.target.value as string);
       };
     
-    const handleKeyChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setFilterKey(event.target.value as string);
-    };
-
     const submitFilter = () => {
         setIsFiltering(true);
-        if(cleanFilter) {
-          setFilterKey("");
-          setFilterValue("");
-          setIsFiltering(false);
-        }
         const obj = {
-          filterKey: filterKey,
           filterValue: filterValue
         };
         setFilters(obj);
-        setCleanFilter(true);
     };
     
     useEffect(() => {
@@ -64,18 +44,12 @@ export const MainContainer = () => {
     return (
         <StyledContainer>
             <Header>
-                <FilterCards
-                    filterKey={filterKey}
-                    filterValue={filterValue}
-                    dataKeys={dataKeys}
-                    handleKeyChange={(e: any)=>handleKeyChange(e)}
-                    handleValueChange={(e: any) => handleValueChange(e)}
-                    onSubmitfunc={submitFilter}
-                    cleanState={cleanFilter}
-                />
+                <StyledInput onSubmit={submitFilter}>
+                    <TextField onChange={handleValueChange} id="outlined-search" label="Search field" type="search" variant="outlined" />
+                </StyledInput>
             </Header>
             <Grid>
-                {filtered?.map((card: any, i: number )=> <Card key={card.id} item={card} />)}
+                {filtered?.map((card: any )=> <Card key={card.id} item={card} />)}
             </Grid>
             <StyledPagination>
                 <Pagination page={currentPage} count={3} onChange={handlePageChange} size="large"/>
@@ -91,8 +65,8 @@ const StyledContainer = styled.div`
     padding-bottom: 30px;
 `;
 
-const StyledInput = styled(FormControl)`
-  width: 180px;
+const StyledInput = styled.form`
+  width: 200px;
   padding-left: 5px;
   font-size: 14px;
 `

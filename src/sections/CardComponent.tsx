@@ -4,32 +4,32 @@ import { deleteCardMutation } from 'src/utils/api/fetchServices';
 import styled from 'styled-components';
 import {Text} from '../components/pdText';
 import { PDCard } from '../utils/types';
+import DeleteCard from './DeleteCardModal';
 
 export const Card = (props: PDCard | any ) => {
-    const deleteHandler = useMutation((id: any) => deleteCardMutation(id));
-    const deleteCardFunc = (id: any) => {
-        deleteHandler.mutate(id);
-    }
    return  (
         <StyledCard>
             <StyledImgWrraper>
+                <StyledDelete>
+                    <DeleteCard id={props.item.id} />
+                </StyledDelete>
                 <StyledImage src={props.item.imagePath} alt={props.item.title} />
             </StyledImgWrraper>
             <StyledTextBox>
                 <Text titleText strong alignLeft>{props.item.title}</Text>
                 <Text bodyText alignLeft>{props.item.description}</Text>
-                <Button onClick={() => deleteCardFunc(props.item.id)}>Delete</Button>
             </StyledTextBox>
          </StyledCard>)
 }
 
 const StyledCard = styled.div`
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     width: 200px;
     height: 200px;
-    border: 1px solid red;
+    border: 1px solid #BBCBD3;
     border-radius: 15px;
     margin-bottom: 40px;
     overflow: hidden;
@@ -52,4 +52,11 @@ const StyledImage = styled.img`
 const StyledTextBox = styled.div`
     width: 100%;
     padding: 10px;
-`
+`;
+
+const StyledDelete = styled.div`
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 1000;
+`;

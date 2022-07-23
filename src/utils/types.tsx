@@ -10,6 +10,5 @@ export interface PDCards {
 }
 
 export interface FilteredObj {
-    filterKey: any;
     filterValue: any;
 }

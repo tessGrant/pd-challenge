@@ -7,7 +7,7 @@ export const getCards = async (pageNum?: number) =>
     });
 
 
-export const filterByKey = async (filterBy: FilteredObj) => await fetch(`http://localhost:3001/cards?${filterBy.filterKey}_like=${filterBy.filterValue}`).then(res => {
+export const filterByKey = async (obj: FilteredObj) => await fetch(`http://localhost:3001/cards?title_like=${obj.filterValue}`).then(res => {
     if(!res.ok){throw new Error(res.statusText)}
     return res.json();
 });
