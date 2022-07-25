@@ -1,7 +1,7 @@
 import { FilteredObj, PDCard } from "../types";
 
 export const getCards = async (pageNum?: number) => 
-    await fetch(`http://localhost:3001/cards?_limit=8&_page=${pageNum}`).then(res => {
+    await fetch(`http://localhost:3001/cards?_page=${pageNum}&_limit=8`).then(res => {
         if(!res.ok){throw new Error(res.statusText)}
         return res.json();
     });

@@ -7,9 +7,9 @@ import { MainContainer } from './sections/MainContainer';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-      staleTime: 30000,
+      // refetchOnWindowFocus: false,
+      // retry: false,
+      // staleTime: 30000,
     },
   },
 });

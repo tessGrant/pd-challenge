@@ -4,9 +4,10 @@ import { Grid } from '../components/pdGrid';
 import { Card } from './CardComponent';
 import { Header } from './Header';
 import Pagination from '@material-ui/lab/Pagination';
-import FormControl from '@material-ui/core/FormControl';
 import { useGetCards } from 'src/utils/hooks/useQueryHook';
 import TextField from '@material-ui/core/TextField';
+import {useQueryClient} from 'react-query';
+import { getCards } from 'src/utils/api/fetchServices';
 
 export const MainContainer = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +16,9 @@ export const MainContainer = () => {
     const [filterValue, setFilterValue] = useState("");
     const [filtered, setFiltered] = useState([]);
 
-    const  {data, isLoading, isError} = useGetCards(isFiltering, filters, currentPage);
+    const queryClient = useQueryClient();
+
+    const  {data, isLoading, isError, isFetching} = useGetCards(isFiltering, filters, currentPage);
 
     const handlePageChange = (e:React.ChangeEvent<unknown>, p:number) => {
         setCurrentPage(p);
@@ -35,9 +38,12 @@ export const MainContainer = () => {
     
     useEffect(() => {
         setFiltered(data);
-    }, [data])
+        const nexPage = currentPage + 1;
+        queryClient.prefetchQuery(["cards", nexPage], () => getCards(nexPage));
+    }, [data, currentPage])
 
     if (isLoading) return <div>Loading...</div>;
+    if (isFetching) return <div>Data is fetching...</div>;
     if (isError) {
         return <div>An error occured 😭</div>;
     }
@@ -49,7 +55,7 @@ export const MainContainer = () => {
                 </StyledInput>
             </Header>
             <Grid>
-                {filtered?.map((card: any )=> <Card key={card.id} item={card} />)}
+                {(filtered && filtered?.length === 0) ? <div>No cards found ...</div> : filtered?.map((card: any )=> <Card key={card.id} item={card} />) }
             </Grid>
             <StyledPagination>
                 <Pagination page={currentPage} count={3} onChange={handlePageChange} size="large"/>
